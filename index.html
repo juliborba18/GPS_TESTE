@@ -1,29 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script type="text/javascript" src="js/jquery-1.5.min.js"></script> 
-    <script type="text/javascript" src="js/jquery.mobile-1.0a3.min.js"></script> 
-	<link rel="stylesheet" href="js/jquery.mobile-1.0a3.min.css" />
-	<script type="text/javascript" src="functions.js"></script>
-    <script src="js/jquery-1.7.1.min.js"></script>
+    <script src="js/jquery-1.4.2.min.js"></script>
     <script>
-<script>
         jQuery(window).ready(function(){
-            jQuery("#btnInit").click(initiate_watchlocation);
-            jQuery("#btnStop").click(stop_watchlocation);
+            jQuery("#btnInit").click(initiate_geolocation);
         });
-        var watchProcess = null;
-        function initiate_watchlocation() {
-		    if (watchProcess == null) {
-        watchProcess = navigator.geolocation.watchPosition(handle_geolocation_query, handle_errors);
-    }
-        }
-        function stop_watchlocation() {
-		    if (watchProcess != null)
-    {
-        navigator.geolocation.clearWatch(watchProcess);
-        watchProcess = null;
-    }
+        function initiate_geolocation() {
+            navigator.geolocation.getCurrentPosition(handle_geolocation_query,handle_errors);
         }
         function handle_errors(error)
         {
@@ -33,41 +17,21 @@
                 break;
                 case error.POSITION_UNAVAILABLE: alert("could not detect current position");
                 break;
-                case error.TIMEOUT: alert("retrieving position timedout");
+                case error.TIMEOUT: alert("retrieving position timed out");
                 break;
                 default: alert("unknown error");
                 break;
             }
         }
-        function handle_geolocation_query(position) {
-		    var text = "Latitude: "  + position.coords.latitude  + "<br/>" +
-               "Longitude: " + position.coords.longitude + "<br/>" +
-               "Accuracy: "  + position.coords.accuracy  + "m<br/>" +
-               "Time: " + new Date(position.timestamp);
-    jQuery("#info").html(text);
-    var image_url = "http://maps.google.com/maps/api/staticmap?sensor=false&center=" + position.coords.latitude + ',' + position.coords.longitude +
-                    "&zoom=14&size=300x400&markers=color:blue|label:S|" + position.coords.latitude + ',' + position.coords.longitude;
-    jQuery("#map").remove();
-    jQuery(document.body).append(
-        jQuery(document.createElement("img")).attr("src", image_url).attr('id','map')
-    );
+        function handle_geolocation_query(position){
+            alert('Lat: ' + position.coords.latitude +
+                  ' Lon: ' + position.coords.longitude);
         }
-    </script>
     </script>
   </head>
   <body>
-  <div data-role="page" id="page1">
-		<div data-theme="b" data-role="header">
-			<h1> GPS </h1>
-		</div>
-		<div>
-		  <button id="btnInit" >Minha localização</button>
-		  <button id="btnStop" >Parar monitoração</button>
-		</div>
-		<div id=”info”></div>
-		<div data-role="footer" data-theme="b" data-position="fixed">
-			<h1>Aluna: Juliana de Borba</h1>
-		</div>
-	</div>
+    <div>
+      <button id="btnInit" >Find my location</button>
+    </div>
   </body>
 </html>
